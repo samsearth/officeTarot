@@ -44,3 +44,14 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+# Office Tarot
+
+## Setup
+
+1. Copy your OpenAI API key into `.env` as `OPENAI_API_KEY=sk-...`
+2. Start the backend: `node server.js`
+3. In another terminal, start the React app as usual (`npm start` or `yarn start`)
+
+The React app will call `/api/omen` to get fortunes securely.
+

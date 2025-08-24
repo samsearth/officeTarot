@@ -11,6 +11,10 @@
     "@types/node": "^16.18.126",
     "@types/react": "^19.1.11",
     "@types/react-dom": "^19.1.7",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "html2canvas": "^1.4.1",
+    "node-fetch": "^2.7.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-scripts": "5.0.1",
@@ -18,10 +22,15 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start:server": "node server.js",
+    "start:client": "react-scripts start",
+    "start": "concurrently \"npm run start:server\" \"npm run start:client\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
   },
   "eslintConfig": {
     "extends": [
