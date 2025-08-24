@@ -565,7 +565,7 @@ export default function App() {
                   </div>
                 </div>
                 {/* Omen section removed as requested */}
-                <div className="result-footer">✨ Built with lots of love ✨ Sam Sitaram ✨</div>
+                <div className="result-footer">✨ Built with lots of love✨</div>
               </div>
             </div>
 
