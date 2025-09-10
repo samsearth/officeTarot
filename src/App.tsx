@@ -1,4 +1,16 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
+// Usage counter (local preview only)
+function useVisitCounter() {
+  const [count, setCount] = useState<number>(2968);
+  useEffect(() => {
+    const key = 'officeTarotVisitCount';
+    let visits = parseInt(localStorage.getItem(key) || '2967', 10);
+    visits = isNaN(visits) ? 2968 : visits + 1;
+    localStorage.setItem(key, String(visits));
+    setCount(visits);
+  }, []);
+  return count;
+}
 
 
 // Default hero image filename (will be overridden by upload/URL if provided)
@@ -153,6 +165,7 @@ function __runTests() {
 }
 
 export default function App() {
+  const visitCount = useVisitCounter();
   const [answers, setAnswers] = useState<Answers>({});
   const [phase, setPhase] = useState<'intro' | 'quiz' | 'result'>("intro");
   const [index, setIndex] = useState<number>(0);
@@ -320,7 +333,7 @@ export default function App() {
   // Download card function removed
 
   return (
-    <div className="site-shell">
+  <div className="site-shell">
       {/* top-right music button */}
       <button className="music-btn" onClick={() => (ambienceOn ? stopAmbience() : startAmbience())} title={ambienceOn ? 'Mute ambience' : 'Play ambience'}>
         {ambienceOn ? (
@@ -376,6 +389,28 @@ export default function App() {
                   className="btn btn-primary btn-hero"
                 >
                   Begin the reading
+                </button>
+              </div>
+              <div style={{width:'100%',textAlign:'center',marginTop:'12px',marginBottom:'0',position:'relative',zIndex:20}}>
+                <button style={{
+                  fontSize:'1.18rem',
+                  fontWeight:900,
+                  color:'#222',
+                  background:'#fffbe8',
+                  border:'2.5px solid #eab308',
+                  borderRadius:'16px',
+                  padding:'8px 28px',
+                  boxShadow:'0 2px 8px #eab30833',
+                  letterSpacing:'.09em',
+                  margin:'0 auto',
+                  display:'inline-block',
+                  opacity:1,
+                  cursor:'default',
+                  fontFamily:'monospace',
+                }}>
+                  <span style={{color:'#eab308',fontWeight:900,marginRight:'8px'}}>🎱</span>
+                  <span style={{color:'#222',fontWeight:900}}>You are visitor</span>
+                  <span style={{color:'#222',fontWeight:900,marginLeft:'8px'}}>{visitCount.toLocaleString()}</span>
                 </button>
               </div>
             </div>
@@ -588,7 +623,8 @@ export default function App() {
         )}
       </div>
 
-      {/* Styles (no OKLCH) */}
+  {/* Styles (no OKLCH) */}
+  {/* ...removed duplicate visitor counter... */}
       <style>{`
         :root { --ink:#0f172a; --ink-2:#334155; --paper:#ffffff; --gold:#f59e0b; --rose:#e11d48; --amber:#f59e0b; --shadow:0 22px 48px rgba(80,20,20,.35), 0 10px 30px rgba(2,6,23,.18); }
         .site-shell { min-height:100vh; color:#f8fafc; background:
@@ -596,6 +632,9 @@ export default function App() {
           radial-gradient(800px 400px at 110% 20%, rgba(244,114,182,0.22) 0%, rgba(15,6,8,0) 70%);
         }
         .container { max-width:1120px; margin:0 auto; padding:40px 16px; position:relative; }
+        @media (max-width: 600px) {
+          .container { padding: 12px 2vw; }
+        }
 
         /* Music button */
         .music-btn { position:fixed; right:18px; top:16px; z-index:60; background:#ffffff; color:var(--ink); border:1px solid #cbd5e1; width:56px; height:56px; font-size:28px; border-radius:9999px; box-shadow:0 8px 18px rgba(2,6,23,.16); cursor:pointer; display:flex; align-items:center; justify-content:center; }
@@ -701,6 +740,10 @@ export default function App() {
           border-radius: 0;
           box-shadow: 0 8px 32px rgba(0,0,0,0.25);
         }
+        @media (max-width: 600px) {
+          .seer-hero { width: 98vw; max-width: 98vw; }
+          .seer-img { max-height: 220px; }
+        }
         .intro-title-block {
           text-align: center;
           margin-bottom: 8px;
@@ -741,6 +784,18 @@ export default function App() {
           z-index: 1;
           margin-top: 54px;
         }
+        @media (max-width: 900px) {
+          .tarot-deck { height: auto; min-height: 0; }
+        }
+        @media (max-width: 600px) {
+          .tarot-deck {
+            grid-template-columns: 1fr;
+            min-height: 0;
+            margin-top: 18px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+          }
+        }
         .question {
           position: relative;
           z-index: 10;
@@ -771,6 +826,23 @@ export default function App() {
           transition: transform .18s, box-shadow .18s, border-color .18s, z-index .1s;
           overflow: hidden;
           filter: drop-shadow(0 0 18px #fbbf2433);
+        }
+        @media (max-width: 900px) {
+          .mini-tarot {
+            position: static;
+            width: 98%;
+            transform: none;
+            min-height: 140px;
+            max-height: 220px;
+            margin-bottom: 0;
+          }
+        }
+        @media (max-width: 600px) {
+          .mini-tarot {
+            min-height: 100px;
+            max-height: 160px;
+            font-size: 0.95rem;
+          }
         }
         .mini-tarot:before {
           content: "";
@@ -985,6 +1057,12 @@ export default function App() {
             linear-gradient(180deg, #fffdf6 0%, #f5ead7 100%);
           box-shadow: 0 24px 64px rgba(234, 88, 12, 0.18), 0 2px 24px #e11d48aa;
           animation: result-pop 0.7s cubic-bezier(.7,-0.2,.3,1.4);
+        }
+        @media (max-width: 600px) {
+          .result-card {
+            border-radius: 18px;
+            padding: 0;
+          }
         }
         @keyframes result-pop {
           0% { transform: scale(0.92) rotate(-2deg); opacity: 0; }
